@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+
 #include "inc/tm4c123gh6pm.h"
 
 uint32_t Timer1ACapture(void);

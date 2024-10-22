@@ -33,6 +33,7 @@ void ResetISR(void);
 static void NmiSR(void);
 static void FaultISR(void);
 static void IntDefaultHandler(void);
+static void GPIOB_Handler(void);
 
 //*****************************************************************************
 //
@@ -84,7 +85,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // The PendSV handler
     IntDefaultHandler,                      // The SysTick handler
     IntDefaultHandler,                      // GPIO Port A
-    IntDefaultHandler,                      // GPIO Port B
+    GPIOB_Handler,                      // GPIO Port B
     IntDefaultHandler,                      // GPIO Port C
     IntDefaultHandler,                      // GPIO Port D
     IntDefaultHandler,                      // GPIO Port E
@@ -298,3 +299,5 @@ IntDefaultHandler(void)
     {
     }
 }
+
+

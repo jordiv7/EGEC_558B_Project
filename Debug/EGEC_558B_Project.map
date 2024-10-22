@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v20.2.7                     
 ******************************************************************************
->> Linked Sat Oct 19 20:03:33 2024
+>> Linked Mon Oct 21 21:18:05 2024
 
 OUTPUT FILE NAME:   <EGEC_558B_Project.out>
 ENTRY POINT SYMBOL: "_c_int00_noinit_noargs"  address: 00000379
