@@ -13,6 +13,7 @@ uint32_t Timer1ACapture(void);
 void TIMER0A_Handler(void);
 void measurePulseWidth(void);
 float getDistance(uint32_t time);
+float clockTime = 1/16000000.0;
 uint32_t risingEdge=0;
 uint32_t fallingEdge=0;
 uint32_t PreScalar1 = 0;
@@ -174,11 +175,11 @@ float getDistance(uint32_t time)
     float temp = 0.0;
     // time = clocks/frequency
     // time = clocks/16000000
-    // period = 1/16000000 = 62.5ns
+    // period = 1/16000000 = 62.5ns or .0000000625s or .0000625ms
     temp = time/16000000.0;
     // Distance = (speed * time)/2
     // Distance = (340m/s * time)/2
-    temp = (temp)/2.0;
+    temp = (340*(temp))/2.0;
     return temp;
 }
 
