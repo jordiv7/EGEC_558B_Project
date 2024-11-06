@@ -1,5 +1,3 @@
-
-
 /**
  * main.c
  */
@@ -10,7 +8,6 @@
 
 #include "inc/tm4c123gh6pm.h"
 
-uint32_t Timer1ACapture(void);
 void TIMER0A_Handler(void);
 void measurePulseWidth(void);
 float getDistance(uint32_t time);
@@ -40,6 +37,9 @@ int main(void)
     SYSCTL_RCC_R |= SYSCTL_RCC_USEPWMDIV;
     SYSCTL_RCC_R |= SYSCTL_RCC_PWMDIV_64;
 
+    //
+    // GPIO Setup
+    //
     /* Enable GPIO PB6 as input and enable PB4 as output*/
     GPIO_PORTB_DEN_R |= 0x50;                               // 0101 0000
     GPIO_PORTB_DIR_R |= 0x10;                               // 0001 0000
@@ -47,6 +47,9 @@ int main(void)
     GPIO_PORTB_AFSEL_R |= 0x50;
     GPIO_PORTB_PCTL_R &= ~0x0F0F0000;
     GPIO_PORTB_PCTL_R |= 0x07040000;
+    //
+    // GPIO Setup
+    //
 
     // NVIC_PRI0_R |= 0x6000;
     // NVIC_EN0_R |= 0x02;
@@ -108,31 +111,9 @@ int main(void)
 	// return 0;
 }
 
-void GPIOB_Handler(void)
-{
-    // Check if PB6 activates the interrupt
-    uint32_t data = GPIO_PORTB_MIS_R;
-
-    if (GPIO_PORTB_MIS_R & 0x40)
-    {
-        uint8_t signal = 0xFF & GPIO_PORTB_DATA_R;
-        if (GPIO_PORTB_DATA_R && 0x40)
-        {
-            t1 = TIMER0_TAR_R;
-            TIMER0_ICR_R = 4;
-        }
-
-        // Clear Interrupt flag
-        GPIO_PORTB_ICR_R |= 0x40;
-    }
-}
-
 void TIMER0A_Handler(void)
 {
-    uint32_t temp = TIMER0_RIS_R;
-    uint8_t temp2 = GPIO_PORTB_DATA_R;
-    uint8_t PB6 = temp2 && 0x40;
-    uint8_t temp4 = TIMER0_TAPS_R;
+    uint8_t PB6 = GPIO_PORTB_DATA_R && 0x40;
     if (TIMER0_RIS_R & 0x04)
     {
         TIMER0_ICR_R = 0x04;
@@ -157,7 +138,7 @@ void measurePulseWidth(void)
         period = fallingEdge - risingEdge;
     else
     {
-        //period = (0xFFFF - risingEdge + fallingEdge);
+        // period = (0xFFFF - risingEdge + fallingEdge);
         // get the difference in prescalar and multiply by 0xFFFF
         period = (0xFFFF*(PreScalar2-PreScalar1) + fallingEdge) - risingEdge;
     }
@@ -173,11 +154,4 @@ float getDistance(uint32_t time)
     // Distance = (340m/s * time)/2
     temp = (340*(temp))/2.0;
     return temp;
-}
-
-uint32_t Timer1ACapture(void)
-{
-    // uin32_t risingEdge, fallingEdge;
-    // TIMER1_ICR_R
-    return 0;
 }
